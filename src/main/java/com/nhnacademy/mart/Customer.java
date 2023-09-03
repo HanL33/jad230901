@@ -1,8 +1,11 @@
 package com.nhnacademy.mart;
 
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Customer {
+    private static final Logger logger = LoggerFactory.getLogger(Counter.class);
 
     // 고객 구매 목록
     private final BuyList buyList;
@@ -19,7 +22,7 @@ public class Customer {
         this.basket = basket;
     }
 
-    // TODO pickFoods 메서드 구현
+    // pickFoods 메서드 구현
 
     public void pickFoods(FoodStand foodStand) {
         //픽푸드에 flow
@@ -39,7 +42,8 @@ public class Customer {
                     }
                 }
                 if (!Objects.equals(buyList.getName(i), basket.getName(count))) {
-                    throw new IllegalArgumentException("재고부족");
+                    logger.error("처리 실패... 남아있는 재고를 찾을 수 없습니다.");
+                    throw new IndexOutOfBoundsException("재고부족");
                 }
             }
         }
