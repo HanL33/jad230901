@@ -25,25 +25,24 @@ public class Customer {
     // pickFoods 메서드 구현
 
     public void pickFoods(FoodStand foodStand) {
-        //픽푸드에 flow
-        //1st buylist 에 있는 항목을 하나하나 분리
-        //2st각각 분리된 리스트항목을 하나하나 진열대에 있는지 확인
-        //3 확인후 있다면 장바구니에 추가
-        //4 진열대에 있는 항목 삭제
-        //5 특이사항 찾았는데 없으면 재고부족 띄우기
         int count = 0;
         for (int i = 0; i < buyList.getSize(); i++) {
             for (int z = 0; z < buyList.getAmountOfItem(i); z++, count++) {
+                int countfs = foodStand.getSize();
                 for (int j = 0; j < foodStand.getSize(); j++) {
                     if (Objects.equals(buyList.getName(i), foodStand.getName(j))) {
+                        if (foodStand.getAmount(foodStand.getFood(j)) < buyList.getAmountOfItem(i)) {
+                            logger.error("처리 실패... 남아있는 재고를 찾을 수 없습니다.");
+                            throw new IllegalArgumentException("재고부족!");
+                        }
                         basket.add(foodStand.getFood(j));
                         foodStand.delet_food(foodStand.getFood(j));
                         break;
                     }
                 }
-                if (!Objects.equals(buyList.getName(i), basket.getName(count))) {
-                    logger.error("처리 실패... 남아있는 재고를 찾을 수 없습니다.");
-                    throw new IndexOutOfBoundsException("재고부족");
+                if (countfs == foodStand.getSize()) {
+                    logger.error("처리 실패...해당 품목은 현재 준비중입니다.");
+                    throw new IllegalArgumentException("해당 품목은 현재 준비중입니다.");
                 }
             }
         }

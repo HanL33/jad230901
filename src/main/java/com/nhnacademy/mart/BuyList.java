@@ -15,7 +15,7 @@ public class BuyList {
         return items.size();
     }
 
-    // TODO add 메서드 생성
+    //add 메서드 생성
     public String getName(int index) {
         Item tem = items.get(index);
         return tem.getName();
